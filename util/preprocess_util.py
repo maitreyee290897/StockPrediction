@@ -7,11 +7,12 @@ possible_suffixes_verb = [dobj]
 possible_prefixes_noun = [amod, neg]
 possible_suffixes_noun = []
 
+nlp = spacy.load('en_core_web_sm', disable=['ner', 'textcat'])
+
 """
 removes stopwords and punctuations
 """
-def remove_stopwords(line):
-    nlp = spacy.load('en_core_web_sm')
+def remove_stopwords(line):    
     doc = nlp(line)
     output=[]
     for token in doc:
@@ -23,7 +24,7 @@ def remove_stopwords(line):
 
 """
 def make_unigrams(line):
-    nlp = spacy.load('en_core_web_sm')
+    #nlp = spacy.load('en_core_web_sm')
     doc = nlp(line)
     output = []
     for np in doc.noun_chunks:
@@ -35,7 +36,7 @@ def make_unigrams(line):
     return output
     
 def make_bigrams(line):
-    nlp = spacy.load('en_core_web_sm')
+    #nlp = spacy.load('en_core_web_sm')
     doc = nlp(line)
     output = []
     for word in doc:

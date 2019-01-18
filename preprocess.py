@@ -23,16 +23,13 @@ for article in newsArticles:
     unigrams = []
     bigrams = []
     for sentence in sentenceList:
-        #unigrams += make_unigrams(sentence)
+        unigrams += make_unigrams(sentence)
         bigrams += make_bigrams(sentence)
     #print(unigrams)
-    print(bigrams)
-    break
-    """
-    processedArticles.append(json.dumps(ProcessedData(article["date"], article["headline"], article["label"], article["delta"], unigrams, bigrams).__dict__))
-    """
+    #print(bigrams)
+    processedArticles.append(ProcessedData(article["date"], article["headline"], article["label"], article["delta"], unigrams, bigrams))
 
-"""
+print(json.dumps({"result":[ob.__dict__ for ob in processedArticles]}))
+
 with open('input-datasets/processed_data.json', 'w') as outfile:
-    json.dumps({"data":processedArticles})
-"""
+    json.dump({"result":[ob.__dict__ for ob in processedArticles]}, outfile, indent=2)
