@@ -2,11 +2,13 @@
 import json
 from entity.processed_data import fromJson
 import math
+
 with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\processed_data.json',"rb") as file:
     data = json.load(file)
 
 with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\config.json') as file:
     config = json.load(file)
+
 numberOfAritcles = int(config["training-data-size"])
 
 globalUnigramsList = []
@@ -28,17 +30,17 @@ for l in globalBigrams:
 
 #-------------Calculating tf-idf values for all ngrams------------------------#
 def buildDictionary(nGramsList):
- dictionary = {}
- for items in nGramsList:
-	 dictionary[items] = nGramsList.count(items)
- return dictionary
+    dictionary = {}
+    for items in nGramsList:
+        dictionary[items] = nGramsList.count(items)
+        return dictionary
 
 def df(term, documentDictionaries):
- cnt = 0;
- for dictionary in documentDictionaries:
-	 if term in dictionary:
-		 cnt = cnt + 1
- return cnt
+    cnt = 0;
+    for dictionary in documentDictionaries:
+        if term in dictionary:
+            cnt = cnt + 1
+            return cnt
 
 def calculateVector(documentDictionary, numberOfdocs, documentDictionaries):
 	documentVector = []
@@ -62,16 +64,16 @@ for sublist in globalBigramsList:
     documentDictionariesBigrams.append(dictionary)
 
 for Dict in documentDictionariesUnigrams:
-	   documentVectorUnigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesUnigrams)
-	   documentVectorsUnigrams.append(documentVectorUnigrams)
+    documentVectorUnigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesUnigrams)
+	documentVectorsUnigrams.append(documentVectorUnigrams)
 
 for Dict in documentDictionariesBigrams:
-	   documentVectorBigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesBigrams)
-	   documentVectorsBigrams.append(documentVectorBigrams)
+	documentVectorBigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesBigrams)
+	documentVectorsBigrams.append(documentVectorBigrams)
 
 #print(documentVectorsUnigrams)
 #print(documentVectorsBigrams)
-
+       
 with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\tf-idf_bigrams.json', 'w') as outfile:
     json.dump({"result":[ob for ob in documentVectorsBigrams]}, outfile, indent=2)
     
