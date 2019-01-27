@@ -4,11 +4,11 @@ import json
 from datetime import datetime
 
 #create list from the stock price data
-with open('/home/shivali/StockPrediction/input-datasets/last5year_short.csv') as stocks_file:
+with open('/home/shivali/StockPrediction/input-datasets/stocks_Reliance.csv') as stocks_file:
     stocks_reader = csv.reader(stocks_file)
     stock_data = [[],[],[]]
     for row in stocks_reader:
-        #extract the datetime object from the existing date pattern
+        #extract the datetime object from the existing date pattern (dd-full month-full year)
         date = datetime.strptime(row[0],'%d-%B-%Y').date()
         stock_data[0].append(date)    #Date
         stock_data[1].append(row[1])  #Delta
