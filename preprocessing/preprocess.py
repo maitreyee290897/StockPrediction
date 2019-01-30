@@ -5,10 +5,10 @@ from util.preprocess_util import make_unigrams, make_bigrams
 from entity.processed_data import ProcessedData 
 from util.preprocess_util import splitParaIntoSentences
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\input_data.json') as file:
+with open('/home/shivali/StockPrediction/input-datasets/labelled_data.json') as file:
     data = json.load(file)
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\config.json') as file:
+with open('/home/shivali/StockPrediction/config.json') as file:
     config = json.load(file)
 
 numberOfNewsArticles = int(config["training-data-size"])
@@ -16,7 +16,6 @@ newsArticles = []
 for i in range(numberOfNewsArticles):
     newsArticles.append(fromJson(json.dumps(data["data"][i])))
     
-print(len(newsArticles))
 processedArticles = []
 for article in newsArticles:
     sentenceList = splitParaIntoSentences(article["body"])
@@ -25,11 +24,9 @@ for article in newsArticles:
     for sentence in sentenceList:
         unigrams += make_unigrams(sentence)
         bigrams += make_bigrams(sentence)
-    #print(unigrams)
-    #print(bigrams)
     processedArticles.append(ProcessedData(article["date"], article["headline"], article["label"], article["delta"], unigrams, bigrams))
 
 #print(json.dumps({"result":[ob.__dict__ for ob in processedArticles]}))
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\processed_data.json', 'w') as outfile:
-    json.dump({"result":[ob.__dict__ for ob in processedArticles]}, outfile, indent=2)
+with open('/home/shivali/StockPrediction/input-datasets/processed_data.json', 'w') as outfile:
+    json.dump({"data":[ob.__dict__ for ob in processedArticles]}, outfile, indent=2)

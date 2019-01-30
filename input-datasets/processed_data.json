@@ -1,10 +1,10 @@
 {
-  "result": [
+  "data": [
     {
-      "date": "29-11-2018",
+      "date": "29-November-2018",
       "headline": "Mobile users base marginally up at 119.1 crore in September; Reliance Jio only gainer",
-      "label": "",
-      "delta": "",
+      "label": "1",
+      "delta": "11",
       "unigrams": [
         "DELHI",
         "base",
@@ -313,10 +313,10 @@
       ]
     },
     {
-      "date": "19-10-2018",
+      "date": "19-October-2018",
       "headline": "Brokerages give Reliance a thumbs up after Q2 show",
-      "label": "",
-      "delta": "",
+      "label": "-1",
+      "delta": "-2.25",
       "unigrams": [
         "Brokerages",
         "stance",
@@ -582,10 +582,10 @@
       ]
     },
     {
-      "date": "17-10-2018",
+      "date": "17-October-2018",
       "headline": "RIL may post double-digit earnings growth, again",
-      "label": "",
-      "delta": "",
+      "label": "-1",
+      "delta": "-31.1",
       "unigrams": [
         "company",
         "profit",
@@ -975,10 +975,10 @@
       ]
     },
     {
-      "date": "18-10-2018",
+      "date": "18-October-2018",
       "headline": "Jio, retail growth to keep investors hooked to RIL",
-      "label": "",
-      "delta": "",
+      "label": "-1",
+      "delta": "-31.1",
       "unigrams": [
         "Group",
         "Industries",

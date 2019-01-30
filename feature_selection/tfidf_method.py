@@ -3,10 +3,10 @@ import json
 from entity.processed_data import fromJson
 import math
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\processed_data.json',"rb") as file:
+with open('/home/shivali/StockPrediction/input-datasets/processed_data.json','rb') as file:
     data = json.load(file)
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\config.json') as file:
+with open('/home/shivali/StockPrediction/config.json') as file:
     config = json.load(file)
 
 numberOfAritcles = int(config["training-data-size"])
@@ -74,8 +74,8 @@ for Dict in documentDictionariesBigrams:
 #print(documentVectorsUnigrams)
 #print(documentVectorsBigrams)
        
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\tf-idf_bigrams.json', 'w') as outfile:
+with open('/home/shivali/StockPrediction/input-datasets/tf-idf_bigrams.json', 'w') as outfile:
     json.dump({"result":[ob for ob in documentVectorsBigrams]}, outfile, indent=2)
     
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\tf-idf_unigrams.json', 'w') as outfile:
+with open('/home/shivali/StockPrediction/input-datasets/tf-idf_unigrams.json', 'w') as outfile:
     json.dump({"result":[ob for ob in documentVectorsUnigrams]}, outfile, indent=2)
