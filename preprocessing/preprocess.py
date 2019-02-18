@@ -23,6 +23,14 @@ for article in newsArticles:
     unigrams = []
     bigrams = []
     for sentence in sentenceList:
+        sentence.strip()
+        sentence = sentence[:-2]
+        sentence = sentence.replace("\r"," ")
+        sentence = sentence.replace("\n"," ")
+        sentence = sentence.replace("\t"," ")
+        sentence = sentence.replace("&#39;", "'")
+        sentence = sentence.replace("&quot;",'\" ')
+        sentence = sentence.replace("&nbsp;",' ')
         unigrams += make_unigrams(sentence)
         bigrams += make_bigrams(sentence)
     #print(unigrams)
