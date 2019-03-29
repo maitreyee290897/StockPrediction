@@ -1,79 +1,101 @@
 # -*- coding: utf-8 -*-
 import json
-from entity.processed_data import fromJson
 import math
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\processed_data.json',"rb") as file:
+import numpy
+from paths import PREPROCESSED_DATA_PATH
+from paths import CONFIG_PATH
+
+with open(PREPROCESSED_DATA_PATH) as file:
     data = json.load(file)
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\config.json') as file:
+with open(CONFIG_PATH) as file:
     config = json.load(file)
-numberOfAritcles = int(config["training-data-size"])
+NUMBER_OF_ARTICLES = int(config["training-data-size"])
 
-globalUnigramsList = []
-for i in range(numberOfAritcles):
-    globalUnigramsList.append(fromJson(json.dumps(data["result"][i]["unigrams"])))
-globalBigrams = []
-for i in range(numberOfAritcles):
-    globalBigrams.append(fromJson(json.dumps(data["result"][i]["bigrams"])))
+'''
+finds frequency of term in ith document
+'''
 
-globalBigramsList=[]
-for l in globalBigrams:
-    couplesListPerArticle = []
-    for l1 in l:
-        couple = (l1[0], l1[1])
-        couplesListPerArticle.append(couple)
-    globalBigramsList.append(couplesListPerArticle)
 
-#print(globalBigramsList)
+def find_term_frequency(term, i, ngrams):
+    cnt = 0
+    for value in data['data'][i][ngrams]:
+        if value == term:
+            cnt = cnt + 1
+    return cnt
 
-#-------------Calculating tf-idf values for all ngrams------------------------#
-def buildDictionary(nGramsList):
- dictionary = {}
- for items in nGramsList:
-	 dictionary[items] = nGramsList.count(items)
- return dictionary
 
-def df(term, documentDictionaries):
- cnt = 0;
- for dictionary in documentDictionaries:
-	 if term in dictionary:
-		 cnt = cnt + 1
- return cnt
+'''
+finds number of documents containing term
+'''
 
-def calculateVector(documentDictionary, numberOfdocs, documentDictionaries):
-	documentVector = []
-	for term in documentDictionary:
-		idf_t = math.log10((1 + numberOfdocs)/(1 + df(term, documentDictionaries))) + 1;
-		tfidf = documentDictionary[term] * idf_t
-		documentVector.append((term, tfidf))
-	return documentVector
-#-----------------------------------------------------------------------------#
 
-documentDictionariesUnigrams = []
-documentVectorsUnigrams = []
-documentDictionariesBigrams = []
-documentVectorsBigrams = []
-for sublist in globalUnigramsList:
-    dictionary = buildDictionary(sublist)
-    documentDictionariesUnigrams.append(dictionary)
-    
-for sublist in globalBigramsList:
-    dictionary = buildDictionary(sublist)
-    documentDictionariesBigrams.append(dictionary)
+def find_doc_term_frequency(term, ngrams):
+    cnt = 0
+    for doc in range(NUMBER_OF_ARTICLES):
+        for value in data['data'][doc][ngrams]:
+            if value == term:
+                cnt = cnt + 1
+                break
+    return cnt
 
-for Dict in documentDictionariesUnigrams:
-	   documentVectorUnigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesUnigrams)
-	   documentVectorsUnigrams.append(documentVectorUnigrams)
 
-for Dict in documentDictionariesBigrams:
-	   documentVectorBigrams = calculateVector(Dict, numberOfAritcles, documentDictionariesBigrams)
-	   documentVectorsBigrams.append(documentVectorBigrams)
+'''
+finds tfidf value of a term in a doc
+'''
 
-#print(documentVectorsUnigrams)
-#print(documentVectorsBigrams)
 
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\tf-idf_bigrams.json', 'w') as outfile:
-    json.dump({"result":[ob for ob in documentVectorsBigrams]}, outfile, indent=2)
-    
-with open(r'C:\Users\Maitreyee Gadwe\Desktop\StockPrediction\input-datasets\tf-idf_unigrams.json', 'w') as outfile:
-    json.dump({"result":[ob for ob in documentVectorsUnigrams]}, outfile, indent=2)
+def find_tfidf_value(term, doc, ngrams):
+    idf_t = math.log10((1 + NUMBER_OF_ARTICLES) / (1 + find_doc_term_frequency(term, ngrams))) + 1
+    tfidf = find_term_frequency(term, doc, ngrams) * idf_t
+    return tfidf
+
+
+'''
+finds tfidf value of a term in a doc
+'''
+
+
+def find_tfidf_unigrams():
+    global_unigrams = []
+    for article in data['data']:
+        for value in article['unigrams']:
+            if value not in global_unigrams:
+                global_unigrams.append(value)
+
+    length = len(global_unigrams)
+    # create sparse matrix
+    X = numpy.zeros((NUMBER_OF_ARTICLES, length))
+    for i in range(NUMBER_OF_ARTICLES):
+        for j in range(length):
+            X[i][j] = find_tfidf_value(global_unigrams[j], i, 'unigrams')
+    return X
+
+
+'''
+finds tfidf value of a term in a doc
+'''
+
+
+def find_tfidf_bigrams():
+    global_bigrams = []
+    for article in data['data']:
+        for value in article['bigrams']:
+            if value not in global_bigrams:
+                global_bigrams.append(value)
+
+    length = len(global_bigrams)
+    # create sparse matrix
+    X = numpy.zeros((NUMBER_OF_ARTICLES, length))
+    for i in range(NUMBER_OF_ARTICLES):
+        for j in range(length):
+            X[i][j] = find_tfidf_value(global_bigrams[j], i, 'bigrams')
+    return X
+
+
+# -----------------------------------------------------------------------------#
+
+unigrams_tfidf = find_tfidf_unigrams()
+bigrams_tfidf = find_tfidf_bigrams()
+print(unigrams_tfidf)
+print(bigrams_tfidf)

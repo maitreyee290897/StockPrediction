@@ -1,0 +1,6 @@
+CONFIG_PATH = r'/home/anany/Desktop/StockPrediction/config.json'
+PREPROCESSED_DATA_PATH = r'/home/anany/Desktop/StockPrediction/input-datasets/processed_data_Reliance.json'
+STOCKS_CSV_DATA_PATH = r'/home/anany/Desktop/StockPrediction/input-datasets/stocks_Reliance.csv'
+INPUT_DATA_PATH = r'/home/anany/Desktop/StockPrediction/input-datasets/input_data_Reliance.json'
+LABELLED_DATA_PATH = r'/home/anany/Desktop/StockPrediction/input-datasets/labelled_data_Reliance.json'
+URLS_PATH = r'urls_Reliance'
